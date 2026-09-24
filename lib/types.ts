@@ -1,0 +1,14 @@
+export type HackathonStatus = "DRAFT" | "UPCOMING" | "REGISTRATION_OPEN" | "HACKING" | "SUBMISSION_OPEN" | "JUDGING" | "COMPLETED" | "CANCELLED";
+export type SubmissionStatus = "DRAFT" | "SUBMITTED" | "LATE" | "UNDER_REVIEW" | "JUDGED" | "DISQUALIFIED";
+export type Profile = { id:string; username:string; display_name:string|null; avatar_url:string|null; created_at:string };
+export type Hackathon = { id:string; host_id:string; name:string; slug:string|null; description:string; theme:string; category:string; join_code:string; status:HackathonStatus; registration_start:string; registration_end:string; hacking_start:string; hacking_end:string; submission_deadline:string; judging_start:string; judging_end:string; winner_announcement_at:string; max_team_size:number; max_participants:number|null; eligibility:string|null; rules:string; created_at:string; updated_at:string };
+export type Prize = { id:string; hackathon_id:string; title:string; position:number|null; amount:number; currency:string; description:string|null };
+export type TimelineEvent = { id:string; hackathon_id:string; type:string; title:string; start_at:string; end_at:string; description:string|null };
+export type Participant = { id:string; hackathon_id:string; user_id:string; joined_at:string; status:string; profile?:Profile; };
+export type Team = { id:string; hackathon_id:string; name:string; captain_id:string; created_at:string; members?:TeamMember[] };
+export type TeamMember = { id:string; team_id:string; user_id:string; joined_at:string; profile?:Profile };
+export type Submission = { id:string; team_id:string; project_name:string; short_description:string; description:string|null; github_url:string; demo_url:string|null; video_url:string|null; tech_stack:string[]; status:SubmissionStatus; submitted_at:string|null; updated_at:string };
+export type Judge = { id:string; hackathon_id:string; user_id:string; created_at:string; profile?:Profile };
+export type Score = { id:string; submission_id:string; judge_id:string; innovation:number; impact:number; technical:number; presentation:number; comments:string|null; created_at:string; updated_at:string };
+export type Winner = { id:string; hackathon_id:string; submission_id:string; prize_id:string|null; rank:number; announced_at:string; };
+export type HackathonBundle = { hackathon:Hackathon; prizes:Prize[]; timeline:TimelineEvent[]; participantCount:number; };

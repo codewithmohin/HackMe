@@ -1,0 +1,5 @@
+"use client";
+import {createContext,useContext,useEffect,useState} from "react";import {supabase} from "@/lib/supabase";import type {User,Session} from "@supabase/supabase-js";
+type Ctx={session:Session|null;user:User|null;loading:boolean;refresh:()=>Promise<void>};const AuthContext=createContext<Ctx>({session:null,user:null,loading:true,refresh:async()=>{}});
+export function AppProviders({children}:{children:React.ReactNode}){const [session,setSession]=useState<Session|null>(null);const [loading,setLoading]=useState(true);const refresh=async()=>{if(!supabase){setLoading(false);return}const {data}=await supabase.auth.getSession();setSession(data.session);setLoading(false)};useEffect(()=>{if(!supabase){setLoading(false);return}refresh();const {data}=supabase.auth.onAuthStateChange((_e,s)=>setSession(s));return()=>data.subscription.unsubscribe()},[]);return <AuthContext.Provider value={{session,user:session?.user??null,loading,refresh}}>{children}</AuthContext.Provider>}
+export function useAuth(){return useContext(AuthContext)}
