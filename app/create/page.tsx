@@ -132,75 +132,7 @@ export default function Create() {
 
     setBusy(true);
 
-    // Generate a unique 6-character join code for participants.
-    const joinCode = Math.random()
-      .toString(36)
-      .substring(2, 8)
-      .toUpperCase();
-
-    const { data: h, error: he } = await supabase
-      .from("hackathons")
-      .insert({
-        host_id: user.id,
-        join_code: joinCode,
-
-        name: parsed.data.name,
-        description: parsed.data.description,
-        theme: parsed.data.theme,
-        category: parsed.data.category,
-
-        registration_start: parsed.data.registration_start,
-        registration_end: parsed.data.registration_end,
-
-        // Hidden backend lifecycle dates
-        hacking_start: parsed.data.hacking_start,
-        hacking_end: parsed.data.hacking_end,
-        submission_deadline: parsed.data.submission_deadline,
-        judging_start: parsed.data.judging_start,
-        judging_end: parsed.data.judging_end,
-
-        winner_announcement_at:
-          parsed.data.winner_announcement_at,
-
-        max_team_size: parsed.data.max_team_size,
-        max_participants: parsed.data.max_participants,
-
-        eligibility: parsed.data.eligibility ?? null,
-
-        rules: parsed.data.rules,
-
-        status: "UPCOMING",
-      })
-      .select()
-      .single();
-
-    if (he || !h) {
-      setError(
-        he?.message ?? "Could not create hackathon."
-      );
-      setBusy(false);
-      return;
-    }
-
-    // Create prizes
-    const { error: pe } = await supabase
-      .from("prizes")
-      .insert(
-        parsed.data.prizes.map((p) => ({
-          ...p,
-          hackathon_id: h.id,
-          currency: "INR",
-        }))
-      );
-
-    if (pe) {
-      setError(pe.message);
-      setBusy(false);
-      return;
-    }
-
-    // Create timeline events
-    const events = [
+    const timeline_events = [
       [
         "REGISTRATION",
         "Registration",
@@ -236,49 +168,24 @@ export default function Create() {
         parsed.data.winner_announcement_at,
       ],
     ].map(([type, title, start, end]) => ({
-      hackathon_id: h.id,
       type,
       title,
       start_at: start,
       end_at: end,
     }));
 
-    const { error: te } = await supabase
-      .from("timeline_events")
-      .insert(events);
+    const { data: h, error } = await supabase.rpc("create_hackathon", {
+      p_payload: {
+        ...parsed.data,
+        eligibility: parsed.data.eligibility ?? null,
+        prizes: parsed.data.prizes,
+        criteria: parsed.data.criteria,
+        timeline_events,
+      },
+    });
 
-    if (te) {
-      setError(te.message);
-      setBusy(false);
-      return;
-    }
-
-    // Create judging criteria
-    const { error: ce } = await supabase
-      .from("judging_criteria")
-      .insert(
-        parsed.data.criteria.map((c) => ({
-          ...c,
-          hackathon_id: h.id,
-        }))
-      );
-
-    if (ce) {
-      setError(ce.message);
-      setBusy(false);
-      return;
-    }
-
-    // Add creator as judge
-    const { error: je } = await supabase
-      .from("judges")
-      .insert({
-        hackathon_id: h.id,
-        user_id: user.id,
-      });
-
-    if (je) {
-      setError(je.message);
+    if (error || !h) {
+      setError(error?.message ?? "Could not create hackathon.");
       setBusy(false);
       return;
     }
