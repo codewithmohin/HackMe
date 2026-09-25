@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Dashboard — HackMe</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+  <div id="navbar"></div>
+  <main class="container page">
+    <div class="page-head"><div><div class="eyebrow">DASHBOARD</div><h1 id="welcome">Welcome.</h1><p class="muted">Your HackMe activity at a glance.</p></div><a class="btn btn-primary" href="create.html">+ Create Hackathon</a></div>
+    <div class="stats-grid dashboard-stats">
+      <div class="stat-card"><small>Hosted Hackathons</small><b id="hostedCount">0</b></div>
+      <div class="stat-card"><small>Joined Hackathons</small><b id="joinedCount">0</b></div>
+      <div class="stat-card"><small>Submissions</small><b id="submissionCount">0</b></div>
+      <div class="stat-card"><small>Upcoming Events</small><b id="upcomingCount">0</b></div>
+    </div>
+    <section class="section">
+      <div class="section-heading"><span>ACTIVITY</span><h2>My Hackathons</h2></div>
+      <div id="myHackathons" class="card-grid"></div>
+    </section>
+  </main>
+  <script src="js/app.js"></script>
+</body>
+</html>

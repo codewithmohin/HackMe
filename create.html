@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Create Hackathon — HackMe</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<div id="navbar"></div>
+<main class="container page">
+  <div class="page-head"><div><div class="eyebrow">HOST</div><h1>Create Hackathon.</h1><p class="muted">Configure the event your way.</p></div></div>
+  <form id="createForm" class="form-card">
+    <div class="create-stepper" aria-label="Create hackathon steps">
+      <span class="create-step active">1. Basic</span><span class="create-step">2. Timeline</span><span class="create-step">3. Prizes</span><span class="create-step">4. Rules & Judging</span>
+    </div>
+
+    <section class="create-section active" data-step="0">
+      <h2>Basic Information</h2>
+      <div class="form-grid"><label>Hackathon Name<input id="name" required placeholder="AI For India"></label><label>Theme<input id="theme" required placeholder="Artificial Intelligence"></label></div>
+      <label>Description<textarea id="description" required placeholder="What should participants build?"></textarea></label>
+      <div class="form-grid"><label>Category<select id="category"><option>AI</option><option>Web Development</option><option>Cybersecurity</option><option>Open Innovation</option></select></label><label>Maximum Team Size<input id="maxTeam" type="number" min="1" max="20" value="4" required></label></div>
+      <div class="create-actions"><button class="btn btn-primary" type="button" data-next>Next: Timeline →</button></div>
+    </section>
+
+    <section class="create-section" data-step="1" hidden>
+      <h2>Timeline</h2>
+      <div class="form-grid timeline-grid">
+        <label>Registration Start<div class="datetime-pair"><input id="regStartDate" type="date" required><input id="regStartTime" type="time" required></div></label>
+        <label>Registration End<div class="datetime-pair"><input id="regEndDate" type="date" required><input id="regEndTime" type="time" required></div></label>
+        <label>Hacking Start<div class="datetime-pair"><input id="hackStartDate" type="date" required><input id="hackStartTime" type="time" required></div></label>
+        <label>Submission Deadline<div class="datetime-pair"><input id="deadlineDate" type="date" required><input id="deadlineTime" type="time" required></div></label>
+      </div>
+      <div class="create-actions"><button class="btn btn-secondary" type="button" data-prev>← Back</button><button class="btn btn-primary" type="button" data-next>Next: Prizes →</button></div>
+    </section>
+
+    <section class="create-section" data-step="2" hidden>
+      <h2>Prizes</h2>
+      <div class="form-grid"><label>Total Prize Pool (₹)<input id="prizePool" type="number" min="0" value="50000"></label><label>1st Prize (₹)<input id="firstPrize" type="number" min="0" value="25000"></label><label>2nd Prize (₹)<input id="secondPrize" type="number" min="0" value="15000"></label><label>3rd Prize (₹)<input id="thirdPrize" type="number" min="0" value="10000"></label></div>
+      <div class="create-actions"><button class="btn btn-secondary" type="button" data-prev>← Back</button><button class="btn btn-primary" type="button" data-next>Next: Rules & Judging →</button></div>
+    </section>
+
+    <section class="create-section" data-step="3" hidden>
+      <h2>Rules & Judging</h2>
+      <label>Rules<textarea id="rules" required placeholder="Write the rules..."></textarea></label>
+      <div class="criteria"><span>Innovation — 10</span><span>Impact — 10</span><span>Technical — 10</span><span>Presentation — 10</span></div>
+      <div class="create-actions"><button class="btn btn-secondary" type="button" data-prev>← Back</button><button class="btn btn-primary" type="submit">Create Hackathon →</button></div>
+    </section>
+  </form>
+</main>
+<script src="js/app.js"></script>
+</body>
+</html>

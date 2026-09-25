@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HackMe — Create. Host. Hack.</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="brand" href="index.html"><span>H</span> HackMe</a>
+    <div class="nav-links">
+      <a href="explore.html">Explore</a>
+      <a href="join.html">Participate</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="create.html" class="btn btn-primary btn-sm">Create</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-copy">
+        <div class="eyebrow">STUDENT HACKATHON PLATFORM</div>
+        <h1>Create.<br>Host.<br><span>Hack.</span></h1>
+        <p>Create and run student hackathons without waiting for an institution. Discover events, build teams, submit projects and celebrate winners.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="explore.html">Explore Hackathons</a>
+          <a class="btn btn-secondary" href="create.html">Host a Hackathon</a>
+        </div>
+        <div class="code-entry">
+          <input id="homeCode" placeholder="Enter hackathon code">
+          <button class="btn btn-secondary" onclick="joinByCode('homeCode')">Enter Code</button>
+        </div>
+      </div>
+      <div class="hero-card glass">
+        <div class="live-dot">● LIVE PLATFORM</div>
+        <h3>AI For India</h3>
+        <p>Build the future with AI.</p>
+        <div class="stats-grid">
+          <div><b>₹50K</b><small>Prize Pool</small></div>
+          <div><b>128</b><small>Participants</small></div>
+          <div><b>4</b><small>Team Size</small></div>
+          <div><b>02d</b><small>Remaining</small></div>
+        </div>
+        <a class="btn btn-primary full" href="hackathon.html?id=demo">View Hackathon →</a>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-heading"><span>01</span><h2>How HackMe works</h2></div>
+      <div class="feature-grid">
+        <article class="feature"><b>01</b><h3>Create</h3><p>Set your theme, timeline, rules, prizes and judging criteria.</p></article>
+        <article class="feature"><b>02</b><h3>Share</h3><p>Get a human-friendly join code and share it with participants.</p></article>
+        <article class="feature"><b>03</b><h3>Build</h3><p>Create teams and build your project using your own tools.</p></article>
+        <article class="feature"><b>04</b><h3>Win</h3><p>Submit, judge, score, rank and announce the winners.</p></article>
+      </div>
+    </section>
+
+    <section class="section dark-section">
+      <div class="container two-col">
+        <div>
+          <div class="eyebrow">FOR PARTICIPANTS</div>
+          <h2>From idea to leaderboard.</h2>
+          <p>Find a hackathon, enter its code, join a team, build externally, submit your project and follow results.</p>
+          <a class="btn btn-primary" href="explore.html">Find a Hackathon</a>
+        </div>
+        <div class="flow-card">
+          <span>DISCOVER</span><i>→</i><span>JOIN</span><i>→</i><span>TEAM</span><i>→</i><span>BUILD</span><i>→</i><span>SUBMIT</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer container"><span>HackMe © 2026</span><span>Create. Host. Hack.</span></footer>
+  <script src="js/app.js"></script>
+</body>
+</html>
