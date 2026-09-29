@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Join — HackMe</title><link rel="stylesheet" href="css/style.css"></head>
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join a Hackathon | HackMe Browser Demo</title>
+  <meta name="description" content="Enter a HackMe event code to open the matching hackathon in this browser demo. Demo codes and events are stored locally, not in a shared service.">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://hackme-hub.vercel.app/join.html">
+  <meta name="theme-color" content="#080a09">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="HackMe">
+  <meta property="og:title" content="Join a Hackathon | HackMe Browser Demo">
+  <meta property="og:description" content="Enter a code to view a hackathon record stored in this browser demo.">
+  <meta property="og:url" content="https://hackme-hub.vercel.app/join.html"><meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="stylesheet" href="css/style.css">
+</head>
 <body class="center-page">
-  <div class="auth-card glass">
+  <main class="auth-card glass">
     <a class="brand" href="index.html"><span>H</span> HackMe</a>
     <div class="eyebrow">PARTICIPATE</div><h1>Enter the hackathon code.</h1>
     <p class="muted">The code opens the full event first. You decide whether to join.</p>
-    <form id="joinForm"><input id="joinCode" class="code-input" maxlength="7" placeholder="X7K9P2A" required><button class="btn btn-primary full">View Hackathon →</button></form>
+    <form id="joinForm"><label class="visually-hidden" for="joinCode">Hackathon code</label><input id="joinCode" class="code-input" maxlength="7" autocomplete="off" placeholder="X7K9P2A" required><button class="btn btn-primary full">View Hackathon →</button></form>
     <div id="joinError" class="error"></div>
-  </div>
+    <p class="tiny">Don't have a code? <a href="explore.html">Browse demo hackathons</a>.</p>
+  </main>
 <script src="js/app.js"></script>
 </body>
 </html>

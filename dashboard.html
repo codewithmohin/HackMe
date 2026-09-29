@@ -1,8 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Dashboard — HackMe</title><link rel="stylesheet" href="css/style.css"></head>
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HackMe Dashboard | Browser Demo</title>
+  <meta name="description" content="View hackathons, submissions and activity saved in your browser's HackMe demo. This prototype uses local storage instead of a shared account.">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://hackme-hub.vercel.app/dashboard.html">
+  <meta name="theme-color" content="#080a09">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="HackMe">
+  <meta property="og:title" content="HackMe Dashboard | Browser Demo">
+  <meta property="og:description" content="Review demo hackathons, submissions and activity saved only in this browser.">
+  <meta property="og:url" content="https://hackme-hub.vercel.app/dashboard.html"><meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="stylesheet" href="css/style.css">
+</head>
 <body>
-  <div id="navbar"></div>
+  <div id="navbar"><nav class="navbar" aria-label="Primary navigation"><a class="brand" href="index.html"><span aria-hidden="true">H</span> HackMe</a><div class="nav-links"><a href="explore.html">Explore</a><a href="join.html">Participate</a><a href="dashboard.html" aria-current="page">Dashboard</a><a href="create.html" class="btn btn-primary btn-sm">Create</a><a href="login.html">Login</a></div></nav></div>
   <main class="container page">
     <div class="page-head"><div><div class="eyebrow">DASHBOARD</div><h1 id="welcome">Welcome.</h1><p class="muted">Your HackMe activity at a glance.</p></div><a class="btn btn-primary" href="create.html">+ Create Hackathon</a></div>
     <div class="stats-grid dashboard-stats">

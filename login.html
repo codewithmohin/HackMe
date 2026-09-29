@@ -1,8 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Login — HackMe</title><link rel="stylesheet" href="css/style.css"></head>
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In to HackMe | Browser Demo</title>
+  <meta name="description" content="Start a local demo profile to try HackMe. This prototype uses a browser username and local storage; it does not provide a real account.">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://hackme-hub.vercel.app/login.html">
+  <meta name="theme-color" content="#080a09">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="HackMe">
+  <meta property="og:title" content="Sign In to HackMe | Browser Demo">
+  <meta property="og:description" content="Create a temporary demo profile in this browser. No shared account is provided.">
+  <meta property="og:url" content="https://hackme-hub.vercel.app/login.html"><meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="stylesheet" href="css/style.css">
+</head>
 <body class="center-page">
-  <div class="auth-card glass">
+  <main class="auth-card glass">
     <a class="brand" href="index.html"><span>H</span> HackMe</a>
     <div class="eyebrow">WELCOME BACK</div>
     <h1>Enter HackMe.</h1>
@@ -12,7 +24,7 @@
       <button class="btn btn-primary full">Continue →</button>
     </form>
     <p class="tiny">Demo authentication uses your browser's localStorage. Supabase can be added later.</p>
-  </div>
+  </main>
   <script src="js/app.js"></script>
 </body>
 </html>

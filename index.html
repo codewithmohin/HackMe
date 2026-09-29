@@ -1,14 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HackMe — Create. Host. Hack.</title>
+  <title>HackMe | Student Hackathon Platform Demo</title>
+  <meta name="description" content="HackMe is a browser-based student hackathon demo for creating events, building teams, submitting projects and judging from one workspace. Demo data stays local.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://hackme-hub.vercel.app/">
+  <meta name="theme-color" content="#080a09">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="HackMe">
+  <meta property="og:title" content="HackMe | Student Hackathon Platform Demo">
+  <meta property="og:description" content="Create, host and run a student hackathon in HackMe's browser demo. Event data stays in the current browser.">
+  <meta property="og:url" content="https://hackme-hub.vercel.app/">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://hackme-hub.vercel.app/#organization",
+          "name": "HackMe",
+          "url": "https://hackme-hub.vercel.app/"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://hackme-hub.vercel.app/#website",
+          "url": "https://hackme-hub.vercel.app/",
+          "name": "HackMe",
+          "publisher": {
+            "@id": "https://hackme-hub.vercel.app/#organization"
+          },
+          "inLanguage": "en"
+        }
+      ]
+    }
+  </script>
 </head>
 <body>
-  <nav class="navbar">
-    <a class="brand" href="index.html"><span>H</span> HackMe</a>
+  <nav class="navbar" aria-label="Primary navigation">
+    <a class="brand" href="index.html"><span aria-hidden="true">H</span> HackMe</a>
     <div class="nav-links">
       <a href="explore.html">Explore</a>
       <a href="join.html">Participate</a>
@@ -18,60 +52,66 @@
   </nav>
 
   <main>
-    <section class="hero container">
+    <section class="hero container" aria-labelledby="page-title">
       <div class="hero-copy">
-        <div class="eyebrow">STUDENT HACKATHON PLATFORM</div>
-        <h1>Create.<br>Host.<br><span>Hack.</span></h1>
-        <p>Create and run student hackathons without waiting for an institution. Discover events, build teams, submit projects and celebrate winners.</p>
+        <div class="eyebrow">STUDENT HACKATHON PLATFORM DEMO</div>
+        <h1 id="page-title">Create.<br>Host.<br><span>Hack.</span></h1>
+        <p>HackMe is a browser demo for organizing student hackathons. Create an event, share its code, build teams, submit projects and run judging in one workspace. Demo events stay in this browser and are not public listings.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="explore.html">Explore Hackathons</a>
+          <a class="btn btn-primary" href="explore.html">Explore the demo</a>
           <a class="btn btn-secondary" href="create.html">Host a Hackathon</a>
         </div>
-        <div class="code-entry">
-          <input id="homeCode" placeholder="Enter hackathon code">
-          <button class="btn btn-secondary" onclick="joinByCode('homeCode')">Enter Code</button>
-        </div>
+        <form class="code-entry" action="join.html" method="get">
+          <label class="visually-hidden" for="homeCode">Hackathon code</label>
+          <input id="homeCode" name="code" maxlength="7" autocomplete="off" placeholder="Enter hackathon code">
+          <button class="btn btn-secondary" type="submit">Enter Code</button>
+        </form>
       </div>
-      <div class="hero-card glass">
-        <div class="live-dot">● LIVE PLATFORM</div>
-        <h3>AI For India</h3>
-        <p>Build the future with AI.</p>
-        <div class="stats-grid">
-          <div><b>₹50K</b><small>Prize Pool</small></div>
-          <div><b>128</b><small>Participants</small></div>
-          <div><b>4</b><small>Team Size</small></div>
-          <div><b>02d</b><small>Remaining</small></div>
+      <aside class="hero-card glass" aria-labelledby="demo-event-heading">
+        <div class="live-dot">BROWSER DEMO</div>
+        <p class="eyebrow">SAMPLE EVENT</p>
+        <h2 id="demo-event-heading">AI For India</h2>
+        <p>Build practical artificial intelligence solutions for students and communities. This sample event is stored locally in the demo browser.</p>
+        <div class="stats-grid" aria-label="Sample event details">
+          <div><b>Theme</b><small>Artificial intelligence</small></div>
+          <div><b>Teams</b><small>Create or join</small></div>
+          <div><b>Projects</b><small>Submit a link</small></div>
+          <div><b>Results</b><small>Score and rank</small></div>
         </div>
-        <a class="btn btn-primary full" href="hackathon.html?id=demo">View Hackathon →</a>
-      </div>
+        <a class="btn btn-primary full" href="hackathon.html?id=demo">View sample hackathon →</a>
+      </aside>
     </section>
 
-    <section class="section container">
-      <div class="section-heading"><span>01</span><h2>How HackMe works</h2></div>
+    <section class="section container" aria-labelledby="how-heading">
+      <div class="section-heading"><span>01</span><h2 id="how-heading">How HackMe works</h2></div>
       <div class="feature-grid">
-        <article class="feature"><b>01</b><h3>Create</h3><p>Set your theme, timeline, rules, prizes and judging criteria.</p></article>
-        <article class="feature"><b>02</b><h3>Share</h3><p>Get a human-friendly join code and share it with participants.</p></article>
-        <article class="feature"><b>03</b><h3>Build</h3><p>Create teams and build your project using your own tools.</p></article>
-        <article class="feature"><b>04</b><h3>Win</h3><p>Submit, judge, score, rank and announce the winners.</p></article>
+        <article class="feature"><b>01</b><h3>Create</h3><p>Set the event theme, timeline, rules, prizes and judging criteria.</p></article>
+        <article class="feature"><b>02</b><h3>Share</h3><p>Get a join code that participants can enter in the same browser demo.</p></article>
+        <article class="feature"><b>03</b><h3>Build</h3><p>Create a team and build a project with the tools you already use.</p></article>
+        <article class="feature"><b>04</b><h3>Judge</h3><p>Submit project links, score entries, view the leaderboard and announce winners.</p></article>
       </div>
     </section>
 
-    <section class="section dark-section">
+    <section class="section dark-section" aria-labelledby="participant-heading">
       <div class="container two-col">
         <div>
           <div class="eyebrow">FOR PARTICIPANTS</div>
-          <h2>From idea to leaderboard.</h2>
-          <p>Find a hackathon, enter its code, join a team, build externally, submit your project and follow results.</p>
-          <a class="btn btn-primary" href="explore.html">Find a Hackathon</a>
+          <h2 id="participant-heading">From idea to leaderboard.</h2>
+          <p>Explore the sample event, enter a code, join a team, submit a project link and follow the demo results. Data created in this prototype is saved only in your browser.</p>
+          <a class="btn btn-primary" href="explore.html">Find a demo hackathon</a>
+          <a class="text-link" href="join.html">Have an event code? Participate</a>
         </div>
-        <div class="flow-card">
-          <span>DISCOVER</span><i>→</i><span>JOIN</span><i>→</i><span>TEAM</span><i>→</i><span>BUILD</span><i>→</i><span>SUBMIT</span>
+        <div class="flow-card" aria-label="Hackathon flow: discover, join, team, build and submit">
+          <span>DISCOVER</span><i aria-hidden="true">→</i><span>JOIN</span><i aria-hidden="true">→</i><span>TEAM</span><i aria-hidden="true">→</i><span>BUILD</span><i aria-hidden="true">→</i><span>SUBMIT</span>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer container"><span>HackMe © 2026</span><span>Create. Host. Hack.</span></footer>
+  <footer class="footer container">
+    <span>HackMe © 2026 · Browser demo</span>
+    <nav aria-label="Footer navigation"><a href="index.html">Home</a><a href="explore.html">Explore</a><a href="join.html">Participate</a></nav>
+  </footer>
   <script src="js/app.js"></script>
 </body>
 </html>

@@ -34,7 +34,7 @@ function code(){const chars='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let s='';for(let i
 
 function nav(){
  const n=document.getElementById('navbar'); if(!n)return;
- n.innerHTML=`<nav class="navbar"><a class="brand" href="index.html"><span>H</span> HackMe</a><div class="nav-links"><a href="explore.html">Explore</a><a href="join.html">Participate</a><a href="dashboard.html">Dashboard</a><a href="create.html" class="btn btn-primary btn-sm">Create</a>${currentUser()?`<a href="#" onclick="logout();return false">Sign out</a>`:`<a href="login.html">Login</a>`}</div></nav>`;
+ n.innerHTML='<nav class="navbar" aria-label="Primary navigation"><a class="brand" href="index.html"><span aria-hidden="true">H</span> HackMe</a><div class="nav-links"><a href="explore.html">Explore</a><a href="join.html">Participate</a><a href="dashboard.html">Dashboard</a><a href="create.html" class="btn btn-primary btn-sm">Create</a>'+(currentUser()?'<button class="nav-button" type="button" onclick="logout()">Sign out</button>':'<a href="login.html">Login</a>')+'</div></nav>';
 }
 function logout(){localStorage.removeItem(USER_KEY);location.href='index.html'}
 
@@ -134,7 +134,10 @@ function renderExplore(){
  if(sort==='prize')list.sort((a,b)=>b.prizePool-a.prizePool);else if(sort==='deadline')list.sort((a,b)=>new Date(a.deadline)-new Date(b.deadline));else list.sort((a,b)=>b.createdAt-a.createdAt);
  const el=document.getElementById('exploreGrid');el.innerHTML=list.length?list.map(card).join(''):`<div class="empty">No hackathons found.</div>`;
 }
-function card(h){return `<article class="card hack-card" onclick="location.href='hackathon.html?id=${encodeURIComponent(h.id)}'"><span class="tag">${esc(status(h))}</span><h3>${esc(h.name)}</h3><p class="muted">${esc(h.description)}</p><div class="card-meta"><div><small>Prize Pool</small><b>${money(h.prizePool)}</b></div><div><small>Team Size</small><b>1–${h.maxTeam}</b></div><div><small>Theme</small><b>${esc(h.theme)}</b></div><div><small>Code</small><b>${esc(h.joinCode)}</b></div></div></article>`}
+function card(h){
+ const href='hackathon.html?id='+encodeURIComponent(h.id);
+ return '<article class="card hack-card"><a class="hack-card-link" href="'+esc(href)+'" aria-label="View '+esc(h.name)+' hackathon"><span class="tag">'+esc(status(h))+'</span><h3>'+esc(h.name)+'</h3><p class="muted">'+esc(h.description)+'</p><div class="card-meta"><div><small>Prize Pool</small><b>'+money(h.prizePool)+'</b></div><div><small>Team Size</small><b>1–'+h.maxTeam+'</b></div><div><small>Theme</small><b>'+esc(h.theme)+'</b></div><div><small>Code</small><b>'+esc(h.joinCode)+'</b></div></div></a></article>';
+}
 
 function renderDashboard(){
  if(!requireUser())return;const u=currentUser(),d=db(),hosted=d.hackathons.filter(h=>h.host===u),joined=d.hackathons.filter(h=>h.joinedBy?.includes(u)),subs=d.hackathons.flatMap(h=>h.submissionList||[]).filter(s=>s.user===u);
@@ -267,11 +270,11 @@ function copyHackathonLink(value){
   else toast('Copy failed.');
 }
 
-function getHack(){return db().hackathons.find(h=>h.id===qs('id'))}
+function getHack(data=db()){return data.hackathons.find(h=>h.id===qs('id'))}
 function renderHackathon(){
   const h=getHack();
   const el=document.getElementById('hackathonView');
-  if(!h) return el.innerHTML='<div class="empty">Hackathon not found.</div>';
+  if(!h) return el.innerHTML='<section class="empty"><h1>Hackathon not found</h1><p>This browser does not have that demo event.</p><p><a class="btn btn-primary" href="explore.html">Explore demo hackathons</a> <a class="btn btn-secondary" href="join.html">Enter another code</a></p></section>';
 
   const joined=!!(currentUser() && h.joinedBy?.includes(currentUser()));
 
@@ -326,7 +329,7 @@ function renderHackathon(){
     </div>`;
 }
 
-function joinHack(){if(!requireUser())return;const d=db(),h=getHack(),u=currentUser();if(!h.joinedBy.includes(u)){h.joinedBy.push(u);h.participants++;save(d)}toast('Hackathon joined!');renderHackathon()}
+function joinHack(){if(!requireUser())return;const d=db(),h=getHack(d),u=currentUser();if(!h)return toast('Hackathon not found.');h.joinedBy=h.joinedBy||[];if(!h.joinedBy.includes(u)){h.joinedBy.push(u);h.participants=(Number(h.participants)||0)+1;save(d)}toast('Hackathon joined!');renderHackathon()}
 
 function renderHost(){
  if(!requireUser())return;const h=getHack();if(!h)return;
@@ -341,23 +344,23 @@ function renderHost(){
 function renderTeams(){
  const h=getHack();if(!h)return;const u=currentUser(),mine=(h.teamList||[]).find(t=>t.members.includes(u));document.getElementById('teamView').innerHTML=`<div class="page-head"><div><div class="eyebrow">TEAM</div><h1>Build together.</h1><p class="muted">${esc(h.name)}</p></div></div>${mine?`<section class="info-panel"><h2>${esc(mine.name)}</h2><p class="muted">Captain: ${esc(mine.captain)}</p>${mine.members.map(m=>`<div class="row"><span>${esc(m)}</span><span>${m===mine.captain?'CAPTAIN':'MEMBER'}</span></div>`).join('')}<a class="btn btn-primary" href="submit.html?id=${h.id}">Submit Project →</a></section>`:`<section class="form-card"><h2>Create Team</h2><form onsubmit="createTeam(event)"><label>Team Name<input id="teamName" required maxlength="40"></label><button class="btn btn-primary">Create Team</button></form><h2>Existing Teams</h2>${(h.teamList||[]).map(t=>`<div class="row"><span><b>${esc(t.name)}</b><small class="muted"> ${t.members.length}/${h.maxTeam}</small></span><button class="btn btn-secondary" onclick="joinTeam('${t.id}')">Join</button></div>`).join('')||'<p class="muted">No teams yet.</p>'}</section>`}`;
 }
-function createTeam(e){e.preventDefault();if(!requireUser())return;const d=db(),h=getHack(),u=currentUser();if(!h.joinedBy.includes(u))return toast('Join the hackathon first.');if((h.teamList||[]).some(t=>t.members.includes(u)))return toast('You are already on a team.');h.teamList=h.teamList||[];h.teamList.push({id:Date.now().toString(),name:document.getElementById('teamName').value.trim(),captain:u,members:[u]});h.teams=h.teamList.length;save(d);renderTeams()}
-function joinTeam(id){const d=db(),h=getHack(),u=currentUser(),t=h.teamList.find(x=>x.id===id);if(!h.joinedBy.includes(u))return toast('Join the hackathon first.');if(h.teamList.some(x=>x.members.includes(u)))return toast('You are already on a team.');if(t.members.length>=h.maxTeam)return toast('Team is full.');t.members.push(u);save(d);renderTeams()}
+function createTeam(e){e.preventDefault();if(!requireUser())return;const d=db(),h=getHack(d),u=currentUser();if(!h)return toast('Hackathon not found.');h.joinedBy=h.joinedBy||[];if(!h.joinedBy.includes(u))return toast('Join the hackathon first.');if((h.teamList||[]).some(t=>t.members.includes(u)))return toast('You are already on a team.');h.teamList=h.teamList||[];h.teamList.push({id:Date.now().toString(),name:document.getElementById('teamName').value.trim(),captain:u,members:[u]});h.teams=h.teamList.length;save(d);renderTeams()}
+function joinTeam(id){const d=db(),h=getHack(d),u=currentUser();if(!h)return toast('Hackathon not found.');h.joinedBy=h.joinedBy||[];h.teamList=h.teamList||[];const t=h.teamList.find(x=>x.id===id);if(!t)return toast('Team not found.');if(!h.joinedBy.includes(u))return toast('Join the hackathon first.');if(h.teamList.some(x=>x.members.includes(u)))return toast('You are already on a team.');if(t.members.length>=h.maxTeam)return toast('Team is full.');t.members.push(u);save(d);renderTeams()}
 
 function renderSubmit(){
  const h=getHack();if(!h)return;const u=currentUser(),team=(h.teamList||[]).find(t=>t.members.includes(u)),existing=(h.submissionList||[]).find(s=>s.teamId===team?.id);document.getElementById('submitView').innerHTML=`<div class="page-head"><div><div class="eyebrow">PROJECT SUBMISSION</div><h1>Submit your project.</h1><p class="muted">${esc(h.name)}</p></div></div>${existing?`<section class="info-panel success-card"><span class="tag">SUBMITTED</span><div class="success-icon">✓</div><h2>Project submitted successfully!</h2><p class="muted">Your project link has been submitted for ${esc(h.name)}.</p><p><b>Project Link:</b> <a class="success" href="${safeUrl(existing.projectLink||existing.github)}" target="_blank" rel="noopener">${esc(existing.projectLink||existing.github)}</a></p><p class="muted">Submitted: ${fmt(existing.submittedAt)}</p></section>`:team?`<form class="form-card" onsubmit="submitProject(event)"><h2>${esc(team.name)}</h2><label>Project Link<input id="projectLink" type="url" placeholder="https://github.com/your-project" required></label><p class="muted">Enter the public link to your project, repository, or live demo.</p><button class="btn btn-primary" type="submit">Submit Project →</button></form>`:`<div class="empty">Create or join a team before submitting.</div>`}`;
 }
 function safeUrl(u){try{const x=new URL(u);return ['https:'].includes(x.protocol)?x.href:'#'}catch{return '#'}}
-function submitProject(e){e.preventDefault();const d=db(),h=getHack(),u=currentUser(),team=(h.teamList||[]).find(t=>t.members.includes(u));if(!team)return toast('Join a team first.');if(Date.now()>new Date(h.deadline).getTime())return toast('Submission deadline has passed.');h.submissionList=h.submissionList||[];if(h.submissionList.some(s=>s.teamId===team.id))return toast('Already submitted.');const projectLink=document.getElementById('projectLink').value.trim();if(!projectLink)return toast('Enter your project link.');h.submissionList.push({id:Date.now().toString(),teamId:team.id,team:team.name,user:u,projectLink,project:team.name+' Project',description:'Project submitted by '+team.name,github:projectLink,demo:'',video:'',tech:'',submittedAt:new Date().toISOString(),scores:[]});h.submissions=h.submissionList.length;save(d);renderSubmit()}
+function submitProject(e){e.preventDefault();const d=db(),h=getHack(d),u=currentUser();if(!h)return toast('Hackathon not found.');const team=(h.teamList||[]).find(t=>t.members.includes(u));if(!team)return toast('Join a team first.');if(Date.now()>new Date(h.deadline).getTime())return toast('Submission deadline has passed.');h.submissionList=h.submissionList||[];if(h.submissionList.some(s=>s.teamId===team.id))return toast('Already submitted.');const projectLink=document.getElementById('projectLink').value.trim();if(!projectLink)return toast('Enter your project link.');h.submissionList.push({id:Date.now().toString(),teamId:team.id,team:team.name,user:u,projectLink,project:team.name+' Project',description:'Project submitted by '+team.name,github:projectLink,demo:'',video:'',tech:'',submittedAt:new Date().toISOString(),scores:[]});h.submissions=h.submissionList.length;save(d);renderSubmit()}
 
 function renderJudging(){
  const h=getHack();if(!h)return;const subs=h.submissionList||[];document.getElementById('judgingView').innerHTML=`<div class="page-head"><div><div class="eyebrow">JUDGING</div><h1>Score projects.</h1><p class="muted">${esc(h.name)}</p></div></div>${subs.length?subs.map(s=>{const sc=(h.scores||[]).find(x=>x.submissionId===s.id)||{};return `<section class="info-panel"><h2>${esc(s.project)}</h2><p class="muted">${esc(s.team)} · ${esc(s.description)}</p><a class="success" href="${safeUrl(s.github)}" target="_blank" rel="noopener">Open GitHub →</a><form onsubmit="saveScore(event,'${s.id}')"><div class="score-inputs">${['innovation','impact','technical','presentation'].map(k=>`<label>${k}<input id="${k}-${s.id}" type="number" min="0" max="10" value="${sc[k]??''}" required></label>`).join('')}</div><label>Comments<textarea id="comments-${s.id}">${esc(sc.comments||'')}</textarea></label><button class="btn btn-primary">Save Score</button></form></section>`}).join(''):`<div class="empty">No submissions yet.</div>`}`;
 }
-function saveScore(e,id){e.preventDefault();const d=db(),h=getHack(),get=k=>Number(document.getElementById(k+'-'+id).value),s={submissionId:id,innovation:get('innovation'),impact:get('impact'),technical:get('technical'),presentation:get('presentation'),comments:document.getElementById('comments-'+id).value};h.scores=h.scores||[];const i=h.scores.findIndex(x=>x.submissionId===id);if(i>=0)h.scores[i]=s;else h.scores.push(s);save(d);toast('Score saved');renderJudging()}
+function saveScore(e,id){e.preventDefault();const d=db(),h=getHack(d);if(!h)return toast('Hackathon not found.');const get=k=>Number(document.getElementById(k+'-'+id).value),s={submissionId:id,innovation:get('innovation'),impact:get('impact'),technical:get('technical'),presentation:get('presentation'),comments:document.getElementById('comments-'+id).value};h.scores=h.scores||[];const i=h.scores.findIndex(x=>x.submissionId===id);if(i>=0)h.scores[i]=s;else h.scores.push(s);save(d);toast('Score saved');renderJudging()}
 
 function renderLeaderboard(){
  const h=getHack();if(!h)return;const subs=h.submissionList||[],scores=h.scores||[];let rows=subs.map(s=>{const sc=scores.find(x=>x.submissionId===s.id);const total=sc?sc.innovation+sc.impact+sc.technical+sc.presentation:0;return {...s,total}}).sort((a,b)=>b.total-a.total);
  document.getElementById('leaderboardView').innerHTML=`<div class="page-head"><div><div class="eyebrow">RESULTS</div><h1>Leaderboard.</h1><p class="muted">${esc(h.name)}</p></div>${h.host===currentUser()?`<button class="btn btn-primary" onclick="announce()">Announce Winners</button>`:''}</div>${rows.length?`<section class="info-panel">${rows.map((r,i)=>`<div class="row"><span><b class="rank">#${i+1}</b> &nbsp; <b>${esc(r.team)}</b><br><small class="muted">${esc(r.project)}</small></span><b>${r.total}/40</b></div>`).join('')}</section>`:`<div class="empty">Leaderboard will appear after projects are judged.</div>`}${h.announced?`<section class="info-panel"><div class="eyebrow">WINNERS</div><h2>🏆 Final Results</h2>${rows.slice(0,3).map((r,i)=>`<div class="row"><b>${['🥇','🥈','🥉'][i]} ${esc(r.team)}</b><span>${money([h.firstPrize,h.secondPrize,h.thirdPrize][i]||0)}</span></div>`).join('')}</section>`:''}`;
 }
-function announce(){const d=db(),h=getHack();if(!h||h.host!==currentUser())return toast('No permission.');if(!confirm('Announce final results?'))return;h.announced=true;save(d);toast('Winners announced!');renderLeaderboard()}
+function announce(){const d=db(),h=getHack(d);if(!h||h.host!==currentUser())return toast('No permission.');if(!confirm('Announce final results?'))return;h.announced=true;save(d);toast('Winners announced!');renderLeaderboard()}
 function fmt(x){return new Date(x).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}

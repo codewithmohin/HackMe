@@ -62,3 +62,13 @@ The UI/flow in this prototype can be migrated to that stack later by replacing t
 7. The participant must explicitly click **Join Hackathon** to enroll.
 
 This prototype stores data in browser `localStorage`, so host and participant testing should be performed in the same browser profile. A real multi-user deployment requires a backend/database.
+
+## SEO
+
+The landing page and the explanatory Explore page are the only URLs listed in sitemap.xml. They explain that this is a browser demo; events created in localStorage are not public or persistent listings.
+
+Create, join, login, dashboard, host, hackathon details, teams, submissions, judging and leaderboard pages have page-specific titles and descriptions but are marked noindex,follow. This is a search indexing choice, not privacy or access control. The repository also includes a root robots.txt, a custom 404.html, canonical and Open Graph metadata, and basic site/breadcrumb structured data.
+
+The current app has no content images, so there are no in-page image alt attributes to add. Do not add Event JSON-LD to browser-local records. See SEO_MIGRATION.md for the future Next.js and Supabase/PostgreSQL route, data, rendering and indexing plan.
+
+For Vercel, deploy the repository root as a static site so index.html, 404.html, robots.txt, sitemap.xml, the HTML routes, CSS and JavaScript are all in the output directory. No rewrite is needed for the current .html routes.
